@@ -27,7 +27,7 @@ class AppRouter {
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
-      final bool loggedIn = authCubit.state == const LoginState.success();
+      final bool loggedIn = authCubit.state == const AuthState.authenticated();
       final bool loggingIn = state.name == '/login';
       if (!loggedIn) {
         return loggingIn ? null : '/login';

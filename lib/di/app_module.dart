@@ -23,8 +23,8 @@ abstract class AppModule {
     dio.options.headers = config.headers;
     return dio
       ..interceptors.addAll([
-        logInterceptor,
         jwtInterceptor,
+        logInterceptor,
       ]);
   }
 
