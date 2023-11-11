@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homme/app/core/auth/bloc/auth_bloc.dart';
+import 'package:homme/app/core/auth/cubit/auth_cubit.dart';
 import 'package:homme/app/navigation/navigator.dart';
-import 'package:homme/app/pages/auth/bloc/login/login_bloc.dart';
-import 'package:homme/domain/repository/auth_repository.dart';
 import 'package:homme/injection.dart';
 
 void main() async {
@@ -19,7 +19,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoginBloc>(create: (context) => getIt<LoginBloc>()),
+        BlocProvider<AuthBloc>(create: (context) => getIt<AuthBloc>()),
+        BlocProvider<AuthCubit>(create: (context) => getIt<AuthCubit>()),
       ], 
       child: Builder(
         builder: (context) => MaterialApp.router(

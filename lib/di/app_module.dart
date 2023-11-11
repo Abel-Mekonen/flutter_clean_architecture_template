@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' hide LogInterceptor;
+import 'package:homme/data/local/db/app_database.dart';
 import 'package:homme/data/remote/client/auth_client.dart';
 import 'package:homme/data/remote/client/user_client.dart';
 import 'package:homme/domain/config/network_config.dart';
@@ -9,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 @module
 abstract class AppModule {
-
   @preResolve
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 
@@ -21,9 +21,10 @@ abstract class AppModule {
   ) {
     Dio dio = Dio();
     dio.options.headers = config.headers;
-    return dio..interceptors.addAll([
-      logInterceptor,
-      jwtInterceptor,
+    return dio
+      ..interceptors.addAll([
+        logInterceptor,
+        jwtInterceptor,
       ]);
   }
 
@@ -33,5 +34,8 @@ abstract class AppModule {
   @singleton
   UserClient userClient(Dio dio) => UserClient(dio);
 
-  
+  @preResolve
+  @singleton
+  Future<AppDatabase> appDatabase() async =>
+      await $FloorAppDatabase.databaseBuilder('app_database.db').build();
 }

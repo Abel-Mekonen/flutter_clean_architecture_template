@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class AppException implements Exception {
-  final _message;
+  final String message;
 
-  AppException(this._message);
+  AppException(this.message);
 
   factory AppException.fromDioException(Exception exception) {
     String message;

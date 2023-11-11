@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:homme/app/core/auth/cubit/auth_cubit.dart';
 import 'package:homme/app/pages/auth/bloc/login/login_bloc.dart';
 import 'package:homme/app/pages/auth/login.dart';
 import 'package:homme/app/pages/auth/signup.dart';
@@ -9,8 +10,8 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class AppRouter {
-  final LoginBloc loginBloc;
-  AppRouter(this.loginBloc);
+  final AuthCubit authCubit;
+  AppRouter(this.authCubit);
 
   late final GoRouter router = GoRouter(
     debugLogDiagnostics: true,
@@ -26,7 +27,7 @@ class AppRouter {
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {
-      final bool loggedIn = loginBloc.state == const LoginState.success();
+      final bool loggedIn = authCubit.state == const LoginState.success();
       final bool loggingIn = state.name == '/login';
       if (!loggedIn) {
         return loggingIn ? null : '/login';
@@ -36,7 +37,7 @@ class AppRouter {
       }
       return null;
     },
-    refreshListenable: GoRouterRefreshStream(loginBloc.stream),
+    refreshListenable: GoRouterRefreshStream(authCubit.stream),
   );
 }
 
