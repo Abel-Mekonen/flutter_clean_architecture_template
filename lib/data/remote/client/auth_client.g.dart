@@ -21,7 +21,7 @@ class _AuthClient implements AuthClient {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<JSendResponse<LoginResponse>>> login(
+  Future<HttpResponse<JSendResponse<LoginResponseDto>>> login(
       LoginDto loginDto) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -29,8 +29,8 @@ class _AuthClient implements AuthClient {
     final _data = <String, dynamic>{};
     _data.addAll(loginDto.toJson());
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<JSendResponse<LoginResponse>>>(Options(
-      method: 'GET',
+        _setStreamType<HttpResponse<JSendResponse<LoginResponseDto>>>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
@@ -45,9 +45,9 @@ class _AuthClient implements AuthClient {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = JSendResponse<LoginResponse>.fromJson(
+    final value = JSendResponse<LoginResponseDto>.fromJson(
       _result.data!,
-      (json) => LoginResponse.fromJson(json as Map<String, dynamic>),
+      (json) => LoginResponseDto.fromJson(json as Map<String, dynamic>),
     );
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;

@@ -14,6 +14,7 @@ part 'login_bloc.freezed.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final IAuthRepository _authRepository;
   final AuthCubit _authCubit;
+  
   LoginBloc(this._authRepository, this._authCubit) : super(const _Initial()) {
     on<_Login>((event, emit) async {
       emit(const _Loading());
