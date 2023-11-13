@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homme/app/core/widgets/dismiss_keyboard.dart';
 import 'package:homme/app/navigation/navigator.dart';
 import 'package:homme/app/pages/auth/bloc/login/login_bloc.dart';
-import 'package:homme/domain/repository/auth_repository.dart';
 import 'package:homme/injection.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,17 +21,33 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(create: (context) => getIt<LoginBloc>()),
-      ], 
+      ],
       child: Builder(
-        builder: (context) => MaterialApp.router(
-          title: 'Homme',
+        builder: (context) => MaterialApp(
+          title: 'Property Management',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          routerConfig: getIt<AppRouter>().router,
-          routerDelegate: getIt<AppRouter>().router.routerDelegate,
-          routeInformationParser: getIt<AppRouter>().router.routeInformationParser,
           debugShowCheckedModeBanner: false,
-        ),));
+          home: NotificationListener<OverscrollIndicatorNotification>(
+            onNotification: (overScroll) {
+              overScroll.disallowIndicator();
+              return true;
+            },
+            child: SafeArea(
+              child: DismissKeyboard(
+                child: ResponsiveSizer(
+                  builder: (context, orientation, screenType) =>
+                      MaterialApp.router(
+                    routerConfig: getIt<AppRouter>().router,
+                    debugShowCheckedModeBanner: false,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
